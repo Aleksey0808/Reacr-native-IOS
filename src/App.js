@@ -1,7 +1,6 @@
 import React from "react";
 
-import * as Font from 'expo-font';
-import Form from "./assets/Screens/RegistrationScreen";
+import Form from "../src/Screens/RegistrationScreen";
 
 export default function App() {
   

@@ -10,8 +10,8 @@ import {
   Alert,
   Button,
   Text,
+  ImageBackground,
 } from "react-native";
-import * as Font from 'expo-font';
 
 export default function Form() {
   const [name, setName] = useState("");
@@ -26,14 +26,20 @@ export default function Form() {
     Alert.alert("Credentials", `${name} ${mail} ${password}`);
   };
 
-  
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+      <ImageBackground
+          source={require("../../assets/photo-BG-2x.jpg")}
+          style={styles.image}
+        >
+        
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
+            <View
+                style={styles.formWrapper}
+              >
             <Text>Регистрация</Text>
           <TextInput
             value={name}
@@ -42,7 +48,7 @@ export default function Form() {
             style={styles.input}
           />
           <TextInput
-            value={name}
+            value={mail}
             onChangeText={mailHandler}
             placeholder="Адрес электронной почты"
             style={styles.input}
@@ -54,8 +60,12 @@ export default function Form() {
             secureTextEntry={true}
             style={styles.input}
           />
-          <Button title={"Зарегистрироваться"} style={styles.input} onPress={onLogin} />
+          <Button title={"Зарегистрироваться"} style={styles.button} onPress={onLogin} />
+          </View>
         </KeyboardAvoidingView>
+        
+        
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -68,6 +78,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#ecf0f1",
   },
+  formWrapper: {
+    paddingTop: 92,
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: "#FFFFFF",
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    justifyContent: "center",
+    // height: 600,
+  },
   input: {
     width: 200,
     height: 44,
@@ -75,5 +95,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     marginBottom: 10,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
+  button: {
+    backgroundColor: '#FF6C00',
+    borderRadius: 100,
   },
 });
