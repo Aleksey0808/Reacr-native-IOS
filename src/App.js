@@ -1,10 +1,11 @@
 import React from "react";
 
-import Form from "../src/Screens/RegistrationScreen";
+import Registration from "../src/Screens/RegistrationScreen";
+import Login from "../src/Screens/LoginScreen";
 
 export default function App() {
   
   return (
-    <Form />
+    <Login />
   )
 }
