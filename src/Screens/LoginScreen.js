@@ -14,7 +14,7 @@ import {
   Image,
 } from "react-native";
 
-export default function Form() {
+export default function Login({ navigation }) {
 
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,9 +63,9 @@ export default function Form() {
                   >
                     <Text style={styles.buttonText}>Зарегистрироваться</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
                     <Text style={styles.aside}>Нет аккаунта? Войти</Text>
-                  </TouchableOpacity>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
         

@@ -14,18 +14,26 @@ import {
   Image,
 } from "react-native";
 
-export default function Form() {
+export default function Registration({ navigation }) {
   const [name, setName] = useState("");
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
   const nameHandler = (text) => setName(text);
   const mailHandler = (text) => setMail(text);
   const passwordHandler = (text) => setPassword(text);
 
   const handleSubmit = () => {
+    setIsShowKeyboard(false);
     Alert.alert("Credentials", `${name} ${mail} ${password}`);
   };
+
+  const keyBoardHide = () => {
+    setIsShowKeyboard(false)
+    Keyboard.dismiss()
+    handleSubmit()
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -39,17 +47,23 @@ export default function Form() {
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
             <View
-                style={styles.formWrapper}
+                style={{
+                  ...styles.formWrapper,
+
+                  ...Platform.select({
+                    ios: {
+                      paddingBottom: isShowKeyboard ? 140 : 20,
+                    },
+                    android: {
+                      marginTop: isShowKeyboard ? -100 : 0,
+                    },
+                  }),
+                }} 
               >
                 <View style={styles.imgBox}>
-                  {/* <Image
-                  style={styles.avatar}
-                  source={require("../assets/image/avatar.png")}
-                /> */}
                   <Image
                     style={styles.icon}
                     source={require("../../assets/plus.png")}
-                    // source={require("../assets/image/del-avatar.icon.png")}
                   />
                 </View>
             <Text style={styles.title}>Регистрация</Text>
@@ -58,12 +72,18 @@ export default function Form() {
             onChangeText={nameHandler}
             placeholder="Логин"
             style={styles.input}
+            onFocus={() => {
+              setIsShowKeyboard(true)
+            }}
           />
           <TextInput
             value={mail}
             onChangeText={mailHandler}
             placeholder="Адрес электронной почты"
             style={styles.input}
+            onFocus={() => {
+              setIsShowKeyboard(true)
+            }}
           />
           <TextInput
             value={password}
@@ -71,17 +91,20 @@ export default function Form() {
             placeholder="Пароль"
             secureTextEntry={true}
             style={styles.input}
+            onFocus={() => {
+              setIsShowKeyboard(true)
+            }}
           />
           <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.8}
-                    onPress={handleSubmit}
+                    onPress={keyBoardHide}
                   >
                     <Text style={styles.buttonText}>Зарегистрироваться</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                     <Text style={styles.aside}>Уже есть аккаунт? Войти</Text>
-                  </TouchableOpacity>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
         
@@ -102,14 +125,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#ecf0f1",
     paddingTop: 100,
-    paddingBottom: 150,
-    // paddingLeft: 16,
-    // paddingRight: 16,
+    
     backgroundColor: "#FFFFFF",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     justifyContent: "center",
-    // height: '80%',
   },
   input: {
     width: 300,
@@ -127,7 +147,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 300,
-    marginTop: 43,
+    marginTop: 20,
     backgroundColor: "#FF6C00",
     height: 61,
     borderRadius: 100,
@@ -135,13 +155,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    fontStyle: "normal",
     lineHeight: 19,
     color: "#FFFFFF",
   },
   aside: {
-    fontFamily: "RobotoRegular",
-    fontStyle: "normal",
     lineHeight: 19,
     marginTop: 16,
     textAlign: "center",
