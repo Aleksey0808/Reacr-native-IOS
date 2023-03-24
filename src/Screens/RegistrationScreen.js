@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useCallback} from "react";
 import {
   StyleSheet,
   View,
@@ -6,40 +6,55 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
+  Platform, 
   Alert,
   TouchableOpacity,
   Text,
   ImageBackground,
   Image,
 } from "react-native";
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
+
+const initialState = {
+  name: "",
+  mail: "",
+  password: "",
+};
 
 export default function Registration({ navigation }) {
-  const [name, setName] = useState("");
-  const [mail, setMail] = useState("");
-  const [password, setPassword] = useState("");
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [state, setState] = useState(initialState);
 
-  const nameHandler = (text) => setName(text);
-  const mailHandler = (text) => setMail(text);
-  const passwordHandler = (text) => setPassword(text);
+  const [fontsLoaded] = useFonts({
+    RobotoMedium: require('../../assets/fonts/Roboto-Medium.ttf'),
+    RobotoRegular: require('../../assets/fonts/Roboto-Regular.ttf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const handleSubmit = () => {
-    setIsShowKeyboard(false);
-    Alert.alert("Credentials", `${name} ${mail} ${password}`);
-
-    setState(initialState);
-  };
-
-  const keyBoardHide = () => {
     setIsShowKeyboard(false)
     Keyboard.dismiss()
-    handleSubmit()
-  }
+    console.log(state)
+    setState(initialState)
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <View 
+      
+      style={styles.container} onLayout={onLayoutRootView}>
       <ImageBackground
           source={require("../../assets/photo-BG-2x.jpg")}
           style={styles.image}
@@ -48,7 +63,8 @@ export default function Registration({ navigation }) {
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
-            <View
+          <View>
+            <View 
                 style={{
                   ...styles.formWrapper,
 
@@ -74,44 +90,45 @@ export default function Registration({ navigation }) {
                     paddingBottom: isShowKeyboard ? 32 : 45,
                   }}>
           <TextInput
-            value={name}
-            onChangeText={nameHandler}
             placeholder="Логин"
             style={styles.input}
+            value={state.name}
             onFocus={() => {
               setIsShowKeyboard(true)
             }}
+            onChangeText={(value) => setState((prevState) => ({...prevState, name: value}))}
           />
           <TextInput
-            value={mail}
-            onChangeText={mailHandler}
             placeholder="Адрес электронной почты"
             style={styles.input}
+            value={state.mail}
             onFocus={() => {
               setIsShowKeyboard(true)
             }}
+            onChangeText={(value) => setState((prevState) => ({...prevState, mail: value}))}
           />
           <TextInput
-            value={password}
-            onChangeText={passwordHandler}
             placeholder="Пароль"
-            secureTextEntry={true}
+            
             style={styles.input}
+            value={state.password}
             onFocus={() => {
               setIsShowKeyboard(true)
             }}
+            onChangeText={(value) => setState((prevState) => ({...prevState, password: value}))}
           />
           </View>
           <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.8}
-                    onPress={keyBoardHide}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.buttonText}>Зарегистрироваться</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                     <Text style={styles.aside}>Уже есть аккаунт? Войти</Text>
             </TouchableOpacity>
+          </View>
           </View>
         </KeyboardAvoidingView>
         
@@ -139,6 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
+    fontFamily: "RobotoRegular",
     width: 300,
     height: 50,
     padding: 10,
@@ -153,6 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   button: {
+    fontFamily: "RobotoRegular",
     width: 300,
     backgroundColor: "#FF6C00",
     height: 61,
@@ -161,10 +180,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
+    fontFamily: "RobotoRegular",
     lineHeight: 19,
     color: "#FFFFFF",
   },
   aside: {
+    fontFamily: 'RobotoRegular',
     lineHeight: 19,
     marginTop: 16,
     textAlign: "center",
@@ -190,12 +211,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   title: {
-    fontStyle: "normal",
+    // fontFamily: "RobotoMedium",
+    fontFamily: 'RobotoMedium',
+
     fontSize: 30,
     lineHeight: 35,
     letterSpacing: 0.16,
     color: "#212121",
-    textAlign: "center",
     marginBottom: 20,
   },
 });

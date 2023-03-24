@@ -14,17 +14,27 @@ import {
   Image,
 } from "react-native";
 
-export default function Login({ navigation }) {
+const initialState = {
+  mail: "",
+  password: "",
+};
 
-  const [mail, setMail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Registration({ navigation }) {
+  // const [name, setName] = useState("");
+  // const [mail, setMail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [state, setState] = useState(initialState);
 
-
+  const nameHandler = (text) => setName(text);
   const mailHandler = (text) => setMail(text);
   const passwordHandler = (text) => setPassword(text);
 
   const handleSubmit = () => {
-    Alert.alert("Credentials", `${mail} ${password}`);
+    setIsShowKeyboard(false)
+    Keyboard.dismiss()
+    console.log(state)
+    setState(initialState)
   };
 
   return (
@@ -39,23 +49,50 @@ export default function Login({ navigation }) {
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
             <View
-                style={styles.formWrapper}
+                style={{
+                  ...styles.formWrapper,
+
+                  ...Platform.select({
+                    ios: {
+                      paddingBottom: isShowKeyboard ? 140 : 20,
+                    },
+                    android: {
+                      marginTop: isShowKeyboard ? -100 : 0,
+                    },
+                  }),
+                }} 
               >
-              
-            <Text style={styles.title}>Войти</Text>
+                <View style={styles.imgBox}>
+                  <Image
+                    style={styles.icon}
+                    source={require("../../assets/plus.png")}
+                  />
+                </View>
+            <Text style={styles.title}>Регистрация</Text>
+            <View style={{
+                    ...styles.form,
+                    paddingBottom: isShowKeyboard ? 32 : 45,
+                  }}>
           <TextInput
-            value={mail}
-            onChangeText={mailHandler}
             placeholder="Адрес электронной почты"
             style={styles.input}
+            value={state.mail}
+            onFocus={() => {
+              setIsShowKeyboard(true)
+            }}
+            onChangeText={(value) => setState((prevState) => ({...prevState, mail: value}))}
           />
           <TextInput
-            value={password}
-            onChangeText={passwordHandler}
             placeholder="Пароль"
-            secureTextEntry={true}
+            
             style={styles.input}
+            value={state.password}
+            onFocus={() => {
+              setIsShowKeyboard(true)
+            }}
+            onChangeText={(value) => setState((prevState) => ({...prevState, password: value}))}
           />
+          </View>
           <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.8}
@@ -64,7 +101,7 @@ export default function Login({ navigation }) {
                     <Text style={styles.buttonText}>Зарегистрироваться</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
-                    <Text style={styles.aside}>Нет аккаунта? Войти</Text>
+                    <Text style={styles.aside}>Уже есть аккаунт? Войти</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -86,14 +123,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#ecf0f1",
     paddingTop: 100,
-    paddingBottom: 150,
-    // paddingLeft: 16,
-    // paddingRight: 16,
+    
     backgroundColor: "#FFFFFF",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     justifyContent: "center",
-    // height: '80%',
   },
   input: {
     width: 300,
@@ -111,7 +145,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 300,
-    marginTop: 43,
     backgroundColor: "#FF6C00",
     height: 61,
     borderRadius: 100,
@@ -119,13 +152,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    fontStyle: "normal",
     lineHeight: 19,
     color: "#FFFFFF",
   },
   aside: {
-    fontFamily: "RobotoRegular",
-    fontStyle: "normal",
     lineHeight: 19,
     marginTop: 16,
     textAlign: "center",
