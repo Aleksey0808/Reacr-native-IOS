@@ -27,6 +27,8 @@ export default function Registration({ navigation }) {
   const handleSubmit = () => {
     setIsShowKeyboard(false);
     Alert.alert("Credentials", `${name} ${mail} ${password}`);
+
+    setState(initialState);
   };
 
   const keyBoardHide = () => {
@@ -67,6 +69,10 @@ export default function Registration({ navigation }) {
                   />
                 </View>
             <Text style={styles.title}>Регистрация</Text>
+            <View style={{
+                    ...styles.form,
+                    paddingBottom: isShowKeyboard ? 32 : 45,
+                  }}>
           <TextInput
             value={name}
             onChangeText={nameHandler}
@@ -95,6 +101,7 @@ export default function Registration({ navigation }) {
               setIsShowKeyboard(true)
             }}
           />
+          </View>
           <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.8}
@@ -147,7 +154,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 300,
-    marginTop: 20,
     backgroundColor: "#FF6C00",
     height: 61,
     borderRadius: 100,
