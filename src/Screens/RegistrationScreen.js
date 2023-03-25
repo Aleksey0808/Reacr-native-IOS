@@ -1,4 +1,4 @@
-import React, { useState , useCallback} from "react";
+import React, { useState , useCallback, useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -12,6 +12,7 @@ import {
   Text,
   ImageBackground,
   Image,
+  Dimensions,
 } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -27,6 +28,18 @@ const initialState = {
 export default function Registration({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [dimensions, setDimensions] = useState(Dimensions.get("window").width - 20 * 2);
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2
+      setDimensions(width)
+    }
+    Dimensions.addEventListener('change', onChange)
+    return () => {
+      Dimensions.removeEventListener('change', onChange)
+    }
+  }, [])
 
   const [fontsLoaded] = useFonts({
     RobotoMedium: require('../../assets/fonts/Roboto-Medium.ttf'),
@@ -71,9 +84,11 @@ export default function Registration({ navigation }) {
                   ...Platform.select({
                     ios: {
                       paddingBottom: isShowKeyboard ? 140 : 20,
+                     
                     },
                     android: {
                       marginTop: isShowKeyboard ? -100 : 0,
+                      
                     },
                   }),
                 }} 
@@ -88,6 +103,7 @@ export default function Registration({ navigation }) {
             <View style={{
                     ...styles.form,
                     paddingBottom: isShowKeyboard ? 32 : 45,
+                    width: dimensions,
                   }}>
           <TextInput
             placeholder="Логин"
@@ -153,7 +169,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    justifyContent: "center",
+  },
+  form: {
+    alignItems: 'center',
+    marginHorizontal: 16,
+    paddingBottom: 32,
   },
   input: {
     fontFamily: "RobotoRegular",
