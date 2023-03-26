@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useCallback, useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -6,13 +6,18 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
+  Platform, 
   Alert,
   TouchableOpacity,
   Text,
   ImageBackground,
   Image,
+  Dimensions,
 } from "react-native";
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 const initialState = {
   mail: "",
@@ -20,15 +25,35 @@ const initialState = {
 };
 
 export default function Registration({ navigation }) {
-  // const [name, setName] = useState("");
-  // const [mail, setMail] = useState("");
-  // const [password, setPassword] = useState("");
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [dimensions, setDimensions] = useState(Dimensions.get("window").width - 20 * 2);
 
-  const nameHandler = (text) => setName(text);
-  const mailHandler = (text) => setMail(text);
-  const passwordHandler = (text) => setPassword(text);
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2
+      setDimensions(width)
+    }
+    Dimensions.addEventListener('change', onChange)
+    return () => {
+      Dimensions.removeEventListener('change', onChange)
+    }
+  }, [])
+
+  const [fontsLoaded] = useFonts({
+    RobotoMedium: require('../../../assets/fonts/Roboto-Medium.ttf'),
+    RobotoRegular: require('../../../assets/fonts/Roboto-Regular.ttf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const handleSubmit = () => {
     setIsShowKeyboard(false)
@@ -39,25 +64,30 @@ export default function Registration({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <View 
+      
+      style={styles.container} onLayout={onLayoutRootView}>
       <ImageBackground
-          source={require("../../assets/photo-BG-2x.jpg")}
+          source={require("../../../assets/photo-BG-2x.jpg")}
           style={styles.image}
         >
         
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
-            <View
+          <View>
+            <View 
                 style={{
                   ...styles.formWrapper,
 
                   ...Platform.select({
                     ios: {
-                      paddingBottom: isShowKeyboard ? 140 : 20,
+                      paddingBottom: isShowKeyboard ? 20 : 20,
+                     
                     },
                     android: {
                       marginTop: isShowKeyboard ? -100 : 0,
+                      
                     },
                   }),
                 }} 
@@ -65,13 +95,14 @@ export default function Registration({ navigation }) {
                 <View style={styles.imgBox}>
                   <Image
                     style={styles.icon}
-                    source={require("../../assets/plus.png")}
+                    source={require("../../../assets/plus.png")}
                   />
                 </View>
-            <Text style={styles.title}>Регистрация</Text>
+            <Text style={styles.title}>Войти</Text>
             <View style={{
                     ...styles.form,
                     paddingBottom: isShowKeyboard ? 32 : 45,
+                    width: dimensions,
                   }}>
           <TextInput
             placeholder="Адрес электронной почты"
@@ -98,11 +129,12 @@ export default function Registration({ navigation }) {
                     activeOpacity={0.8}
                     onPress={handleSubmit}
                   >
-                    <Text style={styles.buttonText}>Зарегистрироваться</Text>
+                    <Text style={styles.buttonText}>Войти</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
-                    <Text style={styles.aside}>Уже есть аккаунт? Войти</Text>
+                    <Text style={styles.aside}>Нет аккаунта? Зарегистрироваться</Text>
             </TouchableOpacity>
+          </View>
           </View>
         </KeyboardAvoidingView>
         
@@ -127,9 +159,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    justifyContent: "center",
+  },
+  form: {
+    alignItems: 'center',
+    marginHorizontal: 16,
+    paddingBottom: 32,
   },
   input: {
+    fontFamily: "RobotoRegular",
     width: 300,
     height: 50,
     padding: 10,
@@ -144,6 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   button: {
+    fontFamily: "RobotoRegular",
     width: 300,
     backgroundColor: "#FF6C00",
     height: 61,
@@ -152,10 +190,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
+    fontFamily: "RobotoRegular",
     lineHeight: 19,
     color: "#FFFFFF",
   },
   aside: {
+    fontFamily: 'RobotoRegular',
     lineHeight: 19,
     marginTop: 16,
     textAlign: "center",
@@ -181,12 +221,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   title: {
-    fontStyle: "normal",
+    // fontFamily: "RobotoMedium",
+    fontFamily: 'RobotoMedium',
+
     fontSize: 30,
     lineHeight: 35,
     letterSpacing: 0.16,
     color: "#212121",
-    textAlign: "center",
     marginBottom: 20,
   },
 });

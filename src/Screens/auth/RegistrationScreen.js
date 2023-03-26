@@ -42,8 +42,8 @@ export default function Registration({ navigation }) {
   }, [])
 
   const [fontsLoaded] = useFonts({
-    RobotoMedium: require('../../assets/fonts/Roboto-Medium.ttf'),
-    RobotoRegular: require('../../assets/fonts/Roboto-Regular.ttf'),
+    RobotoMedium: require('../../../assets/fonts/Roboto-Medium.ttf'),
+    RobotoRegular: require('../../../assets/fonts/Roboto-Regular.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -69,7 +69,7 @@ export default function Registration({ navigation }) {
       
       style={styles.container} onLayout={onLayoutRootView}>
       <ImageBackground
-          source={require("../../assets/photo-BG-2x.jpg")}
+          source={require("../../../assets/photo-BG-2x.jpg")}
           style={styles.image}
         >
         
@@ -83,7 +83,7 @@ export default function Registration({ navigation }) {
 
                   ...Platform.select({
                     ios: {
-                      paddingBottom: isShowKeyboard ? 140 : 20,
+                      paddingBottom: isShowKeyboard ? 20 : 20,
                      
                     },
                     android: {
@@ -96,7 +96,7 @@ export default function Registration({ navigation }) {
                 <View style={styles.imgBox}>
                   <Image
                     style={styles.icon}
-                    source={require("../../assets/plus.png")}
+                    source={require("../../../assets/plus.png")}
                   />
                 </View>
             <Text style={styles.title}>Регистрация</Text>
