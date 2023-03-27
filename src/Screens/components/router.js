@@ -21,12 +21,19 @@ import Login from "../auth/LoginScreen";
 
  const useRoute = (isAuth) => {
     if (!isAuth) {
-      return <MainStack.Navigator initialRouteName="Registration">
+      return <MainStack.Navigator initialRouteName="Registration" >
         <MainStack.Screen name="Registration" component={Registration} options={{headerShown: false}}/>
         <MainStack.Screen name="Login" component={Login} options={{headerShown: false}} />
       </MainStack.Navigator>
     }
-    return <MainTab.Navigator tabBarOptions={{showLabel: false}}>
+    return <MainTab.Navigator screenOptions={{
+      tabBarShowLabel: false,
+      tabBarShowIcon: true,
+      tabBarItemStyle: {
+        borderTopColor: "#E5E5E5",
+        borderTopWidth: 1,
+      },
+    }}>
     <MainTab.Screen options={{
       tabBarIcon: ({focused, size,color}) => {
         return (

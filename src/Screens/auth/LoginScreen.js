@@ -115,7 +115,7 @@ export default function Registration({ navigation }) {
           />
           <TextInput
             placeholder="Пароль"
-            
+            secureTextEntry={true}
             style={styles.input}
             value={state.password}
             onFocus={() => {

@@ -25,10 +25,13 @@ const initialState = {
   password: "",
 };
 
+export let singIn = false;
+
 export default function Registration({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width - 20 * 2);
+  
 
   useEffect(() => {
     const onChange = () => {
@@ -61,6 +64,7 @@ export default function Registration({ navigation }) {
     Keyboard.dismiss()
     console.log(state)
     setState(initialState)
+    singIn = true;
   };
 
   return (
@@ -125,7 +129,7 @@ export default function Registration({ navigation }) {
           />
           <TextInput
             placeholder="Пароль"
-            
+            secureTextEntry={true}
             style={styles.input}
             value={state.password}
             onFocus={() => {
