@@ -25,7 +25,7 @@ const initialState = {
   password: "",
 };
 
-export let singIn = false;
+export let singIn = true;
 
 export default function Registration({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);

@@ -10,13 +10,13 @@ import { AntDesign } from '@expo/vector-icons';
 const MainStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
-import Home from '../mainScreen/Home';
-import CreatePostsScreen from "../mainScreen/CreatePostsScreen"
-import PostsScreen from '../mainScreen/PostsScreen';
-import ProfileScreen from '../mainScreen/ProfileScreen';
+import Home from '../Screens/mainScreen/Home';
+import CreatePostsScreen from "../Screens/mainScreen/CreatePostsScreen"
+import PostsScreen from '../Screens/mainScreen/PostsScreen';
+import ProfileScreen from '../Screens/mainScreen/ProfileScreen';
 
-import Registration from "../auth/RegistrationScreen";
-import Login from "../auth/LoginScreen";
+import Registration from "../Screens/auth/RegistrationScreen";
+import Login from "../Screens/auth/LoginScreen";
 
 
  const useRoute = (isAuth) => {
@@ -35,28 +35,31 @@ import Login from "../auth/LoginScreen";
       },
     }}>
     <MainTab.Screen options={{
+      headerShown: false,
       tabBarIcon: ({focused, size,color}) => {
         return (
           <Feather 
           name="list" 
           size={24} 
-          color="black" 
-          />
-        );
-      }
-    }} name="Create" component={CreatePostsScreen} />
-    <MainTab.Screen options={{
-      tabBarIcon: ({focused, size,color}) => {
-        return (
-          <AntDesign 
-          name="plus" 
-          size={24} 
-          color="black" 
+          color={focused ? "#FF6C00" : color}
           />
         );
       }
     }} name="Posts" component={PostsScreen} />
     <MainTab.Screen options={{
+      headerShown: false,
+      tabBarIcon: ({focused, size,color}) => {
+        return (
+          <AntDesign 
+          name="plus" 
+          size={24} 
+          color={focused ? "#FF6C00" : color}
+          />
+        );
+      }
+    }} name="Create" component={CreatePostsScreen} />
+    <MainTab.Screen options={{
+      headerShown: false,
       tabBarIcon: ({focused, size,color}) => {
         return (
           <Feather
