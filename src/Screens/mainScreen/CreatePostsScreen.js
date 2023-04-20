@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {View, Text, StyleSheet, Image} from "react-native"
+import * as Location from 'expo-location';
 import { Camera, CameraType } from 'expo-camera';
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -7,10 +8,13 @@ export default function CreatePostsScreen({navigation}) {
   const [camera, setCamera] = useState(null)
   const [photo, setPhoto] = useState(null)
 
+
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync()
+    let location = await Location.getCurrentPositionAsync({});
     setPhoto(photo.uri)
-    console.log(photo.uri)
+    console.log('latitude',location.coords.latitude)
+    console.log('longitude',location.coords.longitude)
   }
 
   const sendPhoto = () => {
