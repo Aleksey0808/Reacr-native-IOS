@@ -1,14 +1,41 @@
 import React from "react";
-import {View, Text, StyleSheet} from "react-native"
+import { TouchableOpacity,Text } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default function Home() {
-    return <View style={styles.container}><Text>Home</Text></View>
-}
+import PostsScreen from "./PostsScreen";
+import MapScreen from "../nestedScreens/MapScreen";
+import CommentsScreen from "../nestedScreens/CommentsScreen";
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
+import { Feather } from "@expo/vector-icons";
+
+const NestedScreen = createStackNavigator();
+
+const Home = ({ navigation }) => {
+    return (
+      <NestedScreen.Navigator>
+        <NestedScreen.Screen
+          name="PostsScreen"
+          component={PostsScreen}
+          options={{ headerShown: true }}
+        />
+        <NestedScreen.Screen name="MapScreen" component={MapScreen} />
+        <NestedScreen.Screen
+          name="CommentsScreen"
+          component={CommentsScreen}
+          options={{
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Feather
+                  name="arrow-left"
+                  size={24}
+                  color="#212121"
+                  style={{ marginLeft: 16 }}
+                />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+      </NestedScreen.Navigator>
+    );
+  };
+  export default Home;

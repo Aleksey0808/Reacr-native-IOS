@@ -26,7 +26,9 @@ import Login from "../Screens/auth/LoginScreen";
         <MainStack.Screen name="Login" component={Login} options={{headerShown: false}} />
       </MainStack.Navigator>
     }
-    return <MainTab.Navigator screenOptions={{
+    return <MainTab.Navigator 
+    initialRouteName="Home"
+    screenOptions={{
       tabBarShowLabel: false,
       tabBarShowIcon: true,
       tabBarItemStyle: {
@@ -45,7 +47,7 @@ import Login from "../Screens/auth/LoginScreen";
           />
         );
       }
-    }} name="Posts" component={PostsScreen} />
+    }} name="Home" component={Home} />
     <MainTab.Screen options={{
       headerShown: false,
       tabBarIcon: ({focused, size,color}) => {
