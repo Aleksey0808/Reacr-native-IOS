@@ -1,17 +1,20 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import useRoute from "./components/router";
 import {singIn} from './Screens/auth/RegistrationScreen';
-console.log(singIn)
+
+import { store } from "./redux/store";
 
 export default function App() {
   const route = useRoute(singIn)
-  console.log(route)
+  console.log(store)
   
   return (
-<NavigationContainer>
-    {route}
-</NavigationContainer>
-    
+    <Provider store={store}>
+      <NavigationContainer>
+        {route}
+      </NavigationContainer>
+    </Provider>    
   )
 }

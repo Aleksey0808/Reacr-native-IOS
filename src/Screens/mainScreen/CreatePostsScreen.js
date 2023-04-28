@@ -19,7 +19,7 @@ export default function CreatePostsScreen({navigation}) {
 
   const sendPhoto = () => {
     console.log(navigation)
-    navigation.navigate('PostsScreen', {photo})
+    navigation.navigate('DefaultScreen', {photo})
   }
   
     return <View style={styles.container}>
