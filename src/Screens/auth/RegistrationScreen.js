@@ -17,6 +17,10 @@ import {
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+import {useDispatch} from 'react-redux'
+
+import {authSingUpUser} from '../../redux/auth/authOperations'
+
 SplashScreen.preventAutoHideAsync();
 
 const initialState = {
@@ -25,24 +29,26 @@ const initialState = {
   password: "",
 };
 
-export let singIn = true;
+// export let singIn = true;
 
 export default function Registration({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width - 20 * 2);
+
+  const dispatch = useDispatch()
   
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2
-      setDimensions(width)
-    }
-    Dimensions.addEventListener('change', onChange)
-    return () => {
-      Dimensions.removeEventListener('change', onChange)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 20 * 2
+  //     setDimensions(width)
+  //   }
+  //   Dimensions.addEventListener('change', onChange)
+  //   return () => {
+  //     Dimensions.removeEventListener('change', onChange)
+  //   }
+  // }, [])
 
   const [fontsLoaded] = useFonts({
     RobotoMedium: require('../../../assets/fonts/Roboto-Medium.ttf'),
@@ -62,9 +68,10 @@ export default function Registration({ navigation }) {
   const handleSubmit = () => {
     setIsShowKeyboard(false)
     Keyboard.dismiss()
-    console.log(state)
+    // console.log(state)
+    dispatch(authSingUpUser(state))
     setState(initialState)
-    singIn = true;
+    // singIn = true;
   };
 
   return (
@@ -107,7 +114,7 @@ export default function Registration({ navigation }) {
             <View style={{
                     ...styles.form,
                     paddingBottom: isShowKeyboard ? 32 : 45,
-                    width: dimensions,
+                    // width: dimensions,
                   }}>
           <TextInput
             placeholder="Логин"

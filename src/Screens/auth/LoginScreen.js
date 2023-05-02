@@ -17,6 +17,10 @@ import {
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+import {useDispatch} from 'react-redux'
+
+import {authSingInUser} from '../../redux/auth/authOperations'
+
 SplashScreen.preventAutoHideAsync();
 
 const initialState = {
@@ -28,6 +32,8 @@ export default function Registration({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width - 20 * 2);
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const onChange = () => {
@@ -58,7 +64,8 @@ export default function Registration({ navigation }) {
   const handleSubmit = () => {
     setIsShowKeyboard(false)
     Keyboard.dismiss()
-    console.log(state)
+    // console.log(state)
+    dispatch(authSingInUser(state))
     setState(initialState)
   };
 

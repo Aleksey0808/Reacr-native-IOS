@@ -14,15 +14,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -33,6 +24,10 @@
   },
     "android": {
       "jsEngine": "jsc",
-      "supportsTablet":true}
+      "supportsTablet":true},
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
   }
 }
