@@ -10,13 +10,13 @@ import { AntDesign } from '@expo/vector-icons';
 const MainStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
-import Home from '../Screens/mainScreen/Home';
-import CreatePostsScreen from "../Screens/mainScreen/CreatePostsScreen"
-import PostsScreen from '../Screens/mainScreen/PostsScreen';
-import ProfileScreen from '../Screens/mainScreen/ProfileScreen';
+import Home from './src/Screens/mainScreen/Home';
+import CreatePostsScreen from "./src/Screens/mainScreen/CreatePostsScreen"
+import PostsScreen from './src/Screens/mainScreen/PostsScreen';
+import ProfileScreen from './src/Screens/mainScreen/ProfileScreen';
 
-import Registration from "../Screens/auth/RegistrationScreen";
-import Login from "../Screens/auth/LoginScreen";
+import Registration from "./src/Screens/auth/RegistrationScreen";
+import Login from "./src/Screens/auth/LoginScreen";
 
 
  const useRoute = (isAuth) => {

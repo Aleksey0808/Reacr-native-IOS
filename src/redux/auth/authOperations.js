@@ -9,6 +9,9 @@ import {
   } from "firebase/auth";
   import {authSlice} from './authReducer'
 
+  const {updateUserProfile, authStateChange, authSignOut} = authSlice.actions;
+  
+
 const auth = getAuth(db);
 // console.log(auth.currentUser.uid)
 const authSingUpUser = ({name, password, mail}) => async (dispatch, getState) => {
@@ -23,7 +26,7 @@ const authSingUpUser = ({name, password, mail}) => async (dispatch, getState) =>
             displayName: name,
           });
 
-        dispatch(authSlice.actions.updateUserProfile({
+        dispatch(updateUserProfile({
             userId: uid,
             name: name,
         }))
@@ -39,7 +42,25 @@ const authSingInUser = ({password, mail}) => async (dispatch, getState) => {
         console.log("error.message", error.message);
       }
 }
-const authSingOutUser = () => async (dispatch, getState) => {}
-const authStateChangeUser = () => async (dispatch, getState) => {}
+const authSingOutUser = () => async (dispatch, getState) => {
+  await signOut(auth);
+  dispatch(authSignOut())
+}
+
+const authStateChangeUser = () => async (dispatch, getState) => {
+ 
+  await auth.onAuthStateChanged((user) => {
+    if(user) {
+      const userUpdateProfile = {
+        name: user.displayName,
+        userId: user.uid,
+        mail: user.email,
+      };
+
+      dispatch(authStateChange({ stateChange: true })); 
+      dispatch(updateUserProfile(userUpdateProfile));
+    }
+  })
+}
 
 export {authSingInUser, authSingUpUser, authSingOutUser, authStateChangeUser}
