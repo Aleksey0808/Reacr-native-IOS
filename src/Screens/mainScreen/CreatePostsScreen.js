@@ -6,13 +6,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { nanoid } from 'nanoid'
 
 import db from "../../firebase/config";
-import app from "../../firebase/config";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+// import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const storage = getStorage(db);
-
-const cloudDB = getFirestore(app);
 
 export default function CreatePostsScreen({navigation}) {
   const [camera, setCamera] = useState(null)
@@ -34,16 +32,19 @@ export default function CreatePostsScreen({navigation}) {
   }
 
   const uploadPhotoToServer = async () => {
-    const response = await fetch(photo) 
-    const file = await response.blob()
+    const response = await fetch(photo);
+
+    const file = await response.blob();
 
     const uniquePostId = nanoid().toString();
 
-    const getStorageRef = await getDownloadURL(storageRef);
+    // const data = await storage.ref(`postImage/${uniquePostId}`).put(file);
+    const storageRef = ref(storage, `postImage/${uniquePostId}`)
 
-    const data = await storage.ref(`postImage/${uniquePostId}`).put(file)
+    const data = await uploadBytes(storageRef, file);
+    const getStorageRef = await getDownloadURL(storageRef);
     
-    console.log('data', data)
+   console.log('getStorageRef', getStorageRef);
   }
   
     return <View style={styles.container}>
