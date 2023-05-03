@@ -11,7 +11,7 @@ import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Button} from 
         
     },[route.params])
 
-    console.log('posts', posts)
+    // console.log('posts', posts)
 
     return <View>
         <View style={styles.container}>
