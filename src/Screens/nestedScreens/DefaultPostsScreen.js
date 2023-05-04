@@ -1,27 +1,48 @@
 import React,{useState, useEffect} from "react";
+import { useSelector } from "react-redux";
 import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Button} from "react-native"
+import app from "../../firebase/config";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+
+const db = getFirestore(app);
 
     const DefaultPostsScreen = ({route, navigation}) => {
     const [posts, setPosts] = useState([])
 
+    const { userId } = useSelector((state) => state.auth);
+
+    const getAllPost = async () => {
+        const userPostsRef = collection(db, "posts");
+        const unsubscribe = await onSnapshot(userPostsRef, (data) => {
+            const userPosts = data.docs.map((doc) => ({
+              ...doc.data(),
+              id: doc.id,
+            }));
+            setPosts(userPosts);
+          });
+        return () => unsubscribe();
+      };
+      
     useEffect(() => {
-        if(route.params) {
-            setPosts(prevState => [...prevState, route.params])
-        }
-        
-    },[route.params])
+       
+        getAllPost()
+    },[])
 
     // console.log('posts', posts)
 
     return <View>
         <View style={styles.container}>
-            <FlatList data={posts} keyExtractor={(item, index) => index.toString()} renderItem={({item}) => (
-            <Image source={{uri: item.photo}} style={styles.post}/>
-            )}/>
-            
-        </View>
-        {/* <Button title='go to map'/> */}
-        <View>
+            <FlatList data={posts} keyExtractor={(item, index) => index.toString()} 
+            renderItem={({item}) => (
+                <View>
+                    <Image source={{uri: item.photo}} style={styles.post}/>
+                    <View>
         <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
             <Text style={styles.aside}>MapScreen</Text>
             </TouchableOpacity>
@@ -29,6 +50,13 @@ import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Button} from 
             <Text style={styles.aside}>CommentsScreen</Text>
         </TouchableOpacity>
         </View>
+                </View>
+            
+            )}/>
+            
+        </View>
+        {/* <Button title='go to map'/> */}
+       
     </View>
     
 }

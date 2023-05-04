@@ -16,6 +16,7 @@ import { async } from "@firebase/util";
 const storage = getStorage(db);
 const getPost = getFirestore(app);
 
+
 export default function CreatePostsScreen({navigation}) {
   const [camera, setCamera] = useState(null)
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -27,10 +28,10 @@ export default function CreatePostsScreen({navigation}) {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      }
+      // let { status } = await Location.requestPermissionsAsync();
+      // if (status !== "granted") {
+      //   console.log("Permission to access location was denied");
+      // }
       
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
@@ -65,7 +66,7 @@ export default function CreatePostsScreen({navigation}) {
   const sendPhoto = () => {
     uploadPostToServer()
     // uploadPhotoToServer()
-    navigation.navigate('DefaultScreen', {photo})
+    navigation.navigate('DefaultScreen')
   }
 
   const uploadPostToServer = async () => {
