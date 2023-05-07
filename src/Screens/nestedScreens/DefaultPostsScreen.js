@@ -43,10 +43,13 @@ const db = getFirestore(app);
                 <View>
                     <Image source={{uri: item.photo}} style={styles.post}/>
                     <View>
-        <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
+                        <View>
+                           <Text>{item.comment}</Text> 
+                        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("MapScreen", {location: item.location})}>
             <Text style={styles.aside}>MapScreen</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen")}>
+            <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", {postId: item.id})}>
             <Text style={styles.aside}>CommentsScreen</Text>
         </TouchableOpacity>
         </View>

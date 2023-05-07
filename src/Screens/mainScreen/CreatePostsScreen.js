@@ -1,9 +1,8 @@
 import React, {useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import {View, Text, TextInput, StyleSheet, Image, Button} from "react-native"
+import {View, Text, TextInput, StyleSheet, Image, Button, TouchableOpacity} from "react-native"
 import * as Location from 'expo-location';
 import { Camera, CameraType } from 'expo-camera';
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { nanoid } from 'nanoid'
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
