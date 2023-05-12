@@ -72,7 +72,7 @@ const db = getFirestore(app);
           <Text>{item.name}</Text>
           <Text>{item.comment}</Text>
           </View>}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
          <View style={styles.inputContainer}>

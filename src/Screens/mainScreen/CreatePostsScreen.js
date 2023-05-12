@@ -26,6 +26,16 @@ export default function CreatePostsScreen({navigation}) {
   const { userId, name } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    const requestCameraPermission = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Camera permission denied");
+      } else {
+        console.log("Camera permission granted");
+      }
+    };
+
+
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -36,6 +46,7 @@ export default function CreatePostsScreen({navigation}) {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
+    requestCameraPermission()
   }, []);
 
   if (!permission) {

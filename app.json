@@ -6,10 +6,14 @@
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "plugins": [["expo-camera",
-    {
-      "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
-    }]],
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,15 +29,22 @@
       "fallbackToCacheTimeout": 0
     },
     "ios": {
-    "jsEngine": "jsc",
-    "supportsTablet":true
-  },
+      "jsEngine": "jsc"
+     
+    },
     "android": {
       "jsEngine": "jsc",
-      "supportsTablet":true},
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+     
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.aleksey0808.maapp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "012d9038-ab28-484b-acff-0c3b7d3cf365"
       }
+    }
   }
 }
